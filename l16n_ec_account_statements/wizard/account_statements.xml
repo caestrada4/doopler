@@ -1,0 +1,85 @@
+<odoo>
+    <data>
+        <record id="account_statement_wizard_form" model="ir.ui.view">
+            <field name="name">Estado de Cuuentas</field>
+            <field name="model">account.statements.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="report_type"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="action_report" string="XLS" type="object"
+                                class="btn-primary "/>
+
+                        <button special="cancel" string="Cancel"
+                                type="object" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="account_statements_wizard_customer" model="ir.actions.act_window">
+            <field name="name">Estado de cuentas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.statements.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'types': 'out_invoice'}</field>
+        </record>
+
+        <menuitem action="account_statements_wizard_customer" id="account_statements_wizard_customer_menu"
+                  parent="account.menu_finance_receivables" sequence="4"/>
+
+
+        <record id="account_statements_wizard_supplier" model="ir.actions.act_window">
+            <field name="name">Estado de cuentas</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.statements.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'types': 'in_invoice'}</field>
+        </record>
+
+        <menuitem action="account_statements_wizard_supplier" id="account_statements_wizard_supplier_menu"
+                  parent="account.menu_finance_payables" sequence="4"/>
+
+
+
+        <record id="excel_download" model="ir.ui.view">
+            <field name="name">Descargar Reporte</field>
+            <field name="model">download.xlsx</field>
+            <field name="arch" type="xml">
+                <form create="0" string="Excel Report">
+                    <group>
+                        <div class="col-xl-2">
+                            <label for="excel_file" string="Descargar "/>
+
+                        </div>
+                        <div class="col-xl-6">
+                            <field name="file_name" invisible="1"/>
+                            <field name="excel_file" readonly="1" filename="file_name" nolabel="1"/>
+                        </div>
+                    </group>
+                    <footer>
+                        <button special="cancel" string="Cancel" type="object" class="btn-default"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="excel_form_view_dowload" model="ir.actions.act_window">
+            <field name="name">Descargar Xsl</field>
+            <field name="view_id" ref="excel_download"/>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">download.xlsx</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
