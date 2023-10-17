@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_journal_form" model="ir.ui.view">
+            <field name="model">account.journal</field>
+            <field name="name">account.journal.form</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <field name="l10n_latam_use_documents" position="after">
+                    <field name="l10n_ec_retention_entity"
+                           attrs="{'invisible':['|', '|', ('country_code', '!=', 'EC'), ('l10n_latam_use_documents', '=', False), ('type', 'not in', ( 'purchase'))], 'required':[('country_code', '=', 'EC'), ('l10n_latam_use_documents', '=', True), ('type', 'not in', ('sale', 'purchase'))]}"/>
+                    <field name="l10n_ec_retention_emission" 
+                           attrs="{'invisible':['|', '|', ('country_code', '!=', 'EC'), ('l10n_latam_use_documents', '=', False), ('type', 'not in', ( 'purchase'))], 'required':[('country_code', '=', 'EC'), ('l10n_latam_use_documents', '=', True), ('type', 'not in', ('sale', 'purchase'))]}"
+                    />
+                </field>
+                <xpath expr="//field[@name='refund_sequence']" position="after">
+                    <field name="account_bank_retention" attrs="{'invisible': [('type', 'not in', ['sale'])]}" />
+                </xpath>
+                
+            </field>
+        </record>
+    </data>
+</odoo>
