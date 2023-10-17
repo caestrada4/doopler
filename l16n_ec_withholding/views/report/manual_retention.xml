@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="manual_retention">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page" style="font-size: 16px;">
+                         <div class="row" style="margin-top:70px">
+                                <div class="col-xs-6">
+                                <span style="margin-left: 90px"/>
+                                </div>
+                                 <div class="col-xs-6">
+                                     <span style="margin-left: 80px"/>
+                                </div>
+                        </div>
+                        <div class="row" style="margin-top:40px">
+                                <div class="col-xs-7">
+                                <span style="margin-left: 105px" t-esc="name"/>
+
+                                </div>
+                                 <div class="col-xs-5">
+                                     <span style="margin-left: 175px" t-esc="o.date"/>
+                                </div>
+                        </div>
+                        <div class="row" style="margin-top:12px">
+                                <div class="col-xs-6">
+                                    <span style="margin-left: 105px" t-esc="o.partner_id.identifier"/>
+                                </div>
+                                 <div class="col-xs-6">
+                                     <span style="margin-left: 270px" t-esc="type"/>
+                                </div>
+                        </div>
+                        <div class="row" style="margin-top:12px">
+                                <div class="col-xs-8">
+                                    <span style="margin-left: 115px" t-esc="address"/>
+                                </div>
+                                 <div class="col-xs-4">
+                                     <span style="margin-left: 120" t-esc="o.invoice_id.invoice_number"/>
+                                </div>
+                        </div>
+
+                        <div class="row" style="margin-top:80px">
+                                <table class="table" style="border-style:hidden">
+                                    <tbody>
+                                        <tr t-foreach="o.tax_ids" t-as="line" style="border-style:hidden">
+                                                <td colspan="1">
+                                                    <div style="width:37px"/>
+                                                </td>
+                                                <td style="width:180px">
+                                                    <span t-esc="line.fiscal_year"/>
+                                                </td>
+                                                <td style="width:180px">
+                                                    <span t-esc="line.base" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                                </td>
+                                                 <td style="width:90px">
+                                                    <span t-esc="line.code"/>
+                                                 </td>
+                                                 <td style="width:120px">
+                                                    <t t-if="line.group_id.code in ('ret_vat_srv','ret_vat_b')">
+                                                        Iva
+                                                    </t>
+                                                     <t t-else="">
+                                                      Renta
+                                                     </t>
+                                                 </td>
+                                                <td style="width:115px">
+                                                    <span t-esc="line.tax_id.percent_report"/> %
+                                                 </td>
+                                                 <td style="width:120px">
+                                                    <span t-esc="abs(line.amount)" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
+                                                 </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

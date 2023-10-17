@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="withholding_report" name="withholding_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <t t-call="web.basic_layout">
+                        <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <p>Fecha y hora de impresión:
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                        </p>
+                                        
+                                        <img t-if="res_company.partner_id.image_1920"
+                                         t-att-src="image_data_uri(res_company.partner_id.image_1920)"
+                                         style="height:150px;max-width:90%" alt="Company Logo"/>
+                                        <h4>
+                                            <span t-esc="res_company.name"/>
+                                        </h4>
+                                        <span>
+                                            <strong>DIRECCION:</strong>
+                                        </span>
+                                        <span t-esc="res_company.street"/>
+                                        y
+                                        <span t-esc="res_company.street2"/>
+                                        <span t-esc="res_company.city"/>
+                                        <br/>
+                                        <span>
+                                            <strong>Contribuyente Especial Nro.:</strong>
+                                        </span>
+                                        <!--                                    <span t-esc="res_company.company_registry or '000' "/>-->
+                                        <br/>
+                                        <span>
+                                            <strong>Obligado a Llevar contabilidad:</strong>
+                                            <!--                                        <span t-esc="res_company.requiere_contabilidad or 'No' "/>-->
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <strong>RUC</strong>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-esc="res_company.partner_id.vat"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <h4>COMPROBANTE DE RETENCIÓN</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <span>No.</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-esc="o.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span>NUMERO DE AUTORIZACION</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span t-esc="o.authorization_number"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <span>FECHA Y HORA DE AUTORIZACION:</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-esc="o.date"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <span>AMBIENTE:</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-esc="res_company.env_service == '1' and 'PRUEBAS' or 'PRODUCCION'"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5">
+                                                <span>EMISION:</span>
+                                            </div>
+                                            <div class="col-7">
+                                                <span t-esc="res_company.emission_code == '1' and 'NORMAL' or 'INDISPONIBILIDAD'"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span>CLAVE DE ACCESO</span>
+                                            </div>
+                                            <div class="col-12">
+                                                <!-- <img style="width: 100% !important; t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', o.authorization_number, 450, 60)"/> -->
+                                                <img t-if="o.authorization_number" t-att-src="'/report/barcode/Code128/'+o.authorization_number"
+                                                     style="width:400px;height:25px" alt="Barcode"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                Razón social/Nombre Apellidos
+                                            </div>
+                                            <div class="col-8">
+                                                <p t-field="o.partner_id.name"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                Identificación:
+                                            </div>
+                                            <div class="col-6">
+                                                <p t-field="o.partner_id.vat"/>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                Fecha
+                                            </div>
+                                            <div class="col-6">
+                                                <p t-field="o.date"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Comprobante
+                                                    </th>
+                                                    <th>
+                                                        Número
+                                                    </th>
+                                                    <th>
+                                                        Fecha Emisión
+                                                    </th>
+                                                    <th>
+                                                        Ejercicio Fiscal
+                                                    </th>
+                                                    <th>
+                                                        Base Imponible para la Retención
+                                                    </th>
+                                                    <th>
+                                                        Impuesto
+                                                    </th>
+                                                    <th>
+                                                        Código
+                                                    </th>
+                                                    <th>
+                                                        Porcentaje Retención
+                                                    </th>
+                                                    <th>
+                                                        Valor Retención
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="o.move_ids" t-as="l">
+                                                    <td>
+                                                        Factura
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="o.invoice_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="o.date"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="l.fiscal_year"/>
+                                                    </td>
+
+                                                    <td>
+                                                        <span t-field="l.base"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="l.tax_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="l.tax_id.l10n_ec_code_applied"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="abs(l.tax_id.amount)"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="abs(l.amount)"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div style="float:right;margin-right: 44px;">
+                                                Total:
+                                                <span t-esc="abs(o.amount_total)"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span>Información Adicional</span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                Email :
+                                            </div>
+                                            <div class="col-6">
+                                                <span t-esc="res_company.email"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                No Contribución :
+                                            </div>
+                                            <div class="col-6">
+                                                <span t-esc="docs.name"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

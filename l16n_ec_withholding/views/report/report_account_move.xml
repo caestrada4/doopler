@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_invoice_with_payments" inherit_id="account.report_invoice_with_payments">
+            <xpath expr='//t[@t-call="web.html_container"]' position="replace">
+                <t t-call="web.html_container">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <t t-call="web.basic_layout">
+                                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="logo" style="width: 330px; height: 200px;">
+                                                    <div>
+                                                        <p>Fecha y hora de impresión:
+                                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                                                        </p>
+                                                    </div>
+                                                    <img t-if="res_company.partner_id.image_1920"
+                                                         t-att-src="image_data_uri(res_company.partner_id.image_1920)"
+                                                         style="height:150px;max-width:90%" alt="Company Logo"/>
+                                                </div>
+                                                <br/>
+                                                <h4>
+                                                    <span t-esc="res_company.name"/>
+                                                </h4>
+                                                <h5>
+                                                    <span t-esc="res_company.tradename"/>
+                                                </h5>
+                                                <span>
+                                                    <strong>DIRECCION:</strong>
+                                                </span>
+                                                <strong></strong>
+                                                <span t-esc="res_company.street"/>
+                                                <br/>
+                                                <span>
+                                                    Contribuyente
+                                                </span>
+                                                <span t-esc="res_company.special_taxpayer"/>
+                                                <br/>
+                                                <span>
+                                                    <strong>Obligado a Llevar contabilidad:</strong>
+                                                    <!-- <span t-esc="res_company.requiere_contabilidad or 'No' "/> -->
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-7">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <span>
+                                                    <strong>RUC</strong>
+                                                </span>
+                                                <span t-esc="res_company.partner_id.vat"/>
+                                                <br/>
+                                                <span>
+                                                    <t t-if="res_company.special_taxpayer=='Contribuyente Especial'">
+                                                        <t t-if="o.move_type=='out_invoice' ">
+                                                            <h4>FACTURA COMERCIAL NEGOCIABLE</h4>
+                                                        </t>
+                                                        <t t-if="o.move_type=='in_invoice'">
+                                                            <h4>FACTURA COMERCIAL NEGOCIABLE</h4>
+                                                        </t>
+                                                        <t t-if="o.move_type=='liq_purchase'">
+                                                            <h4>LIQUIDACION DE COMPRA COMERCIAL NEGOCIABLE</h4>
+                                                        </t>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-if="o.move_type=='out_invoice' ">
+                                                            <h4>FACTURA</h4>
+                                                        </t>
+                                                        <t t-if="o.move_type=='in_invoice'">
+                                                            <h4>FACTURA</h4>
+                                                        </t>
+                                                        <t t-if="o.move_type=='liq_purchase'">
+                                                            <h4>LIQUIDACION</h4>
+                                                        </t>
+                                                    </t>
+                                                    <t t-if="o.move_type=='out_refund'">
+                                                        <h4>NOTA DE CREDITO</h4>
+                                                    </t>
+
+                                                </span>
+                                                <br/>
+                                                <span>
+                                                    <strong>NUMERO</strong>
+                                                </span>
+                                                <span t-esc="o.name"/>
+                                                <br/>
+                                                <span>
+                                                    <strong>NUMERO DE AUTORIZACION</strong>
+                                                </span>
+                                                <br/>
+                                                <span t-esc="o.authorization_number"/>
+                                                <br/>
+                                                <span>
+                                                    <strong>FECHA Y HORA DE AUTORIZACION:</strong>
+                                                </span>
+                                                <!--<span t-esc="o.authorization_date"/>-->
+                                                <!--                                    <span t-esc="context_timestamp(o.authorization_date).strftime('%Y-%m-%d %H:%M')"/>-->
+                                                <br/>
+                                                <span>
+                                                    <strong>AMBIENTE:</strong>
+                                                </span>
+                                                <span t-esc="res_company.env_service == '1' and 'PRUEBAS' or 'PRODUCCION'"/>
+                                                <br/>
+                                                <span>
+                                                    <strong>EMISION:</strong>
+                                                    <span t-esc="res_company.env_service == '1' and 'NORMAL' or 'INDISPONIBILIDAD'"/>
+                                                </span>
+                                                <br/>
+                                                <span>
+                                                    <strong>CLAVE DE ACCESO</strong>
+                                                </span>
+                                                <br/>
+                                                <div class="text-align: left;">
+                                                    <img t-if="o.authorization_number" t-att-src="'/report/barcode/Code128/'+o.authorization_number"
+                                                     style="width:400px;height:25px" alt="Barcode"/>
+                                                </div>
+                                                <br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <br/>
+                                    <div class="col-3">
+                                        <span>
+                                            <strong>RAZON SOCIAL</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-5">
+                                        <span t-esc="o.partner_id.name.upper()"/>
+                                    </div>
+                                    <div class="col-2" style="padding-left: 0px; padding-right: 0px;">
+                                        <span>
+                                            <strong>IDENTIFICACION</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-2">
+                                        <span t-esc="o.partner_id.vat"/>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <span>
+                                                <strong>FECHA DE EMISION</strong>
+                                            </span>
+                                        </div>
+                                        <div class="col-3">
+                                            <span t-esc="o.invoice_date"/>
+                                        </div>
+                                        <t t-if="o.move_type=='out_refund'">
+                                            <div class="col-2">
+                                                <span>
+                                                    <strong>Documento Origen</strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-2">
+                                                <span t-esc="o.name"/>
+                                            </div>
+                                        </t>
+
+                                    </div>
+                                </div>
+
+                                <br/>
+                                <div class="row"
+                                     style="background-color: silver; text-align: center; margin-bottom: 10px;">
+                                    <div class="col-2">
+                                        <span>
+                                            <strong>CODIGO</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>
+                                            <strong>DESCRIPCION</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-2">
+                                        <span>
+                                            <strong>P. UNIT.</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-1">
+                                        <span>
+                                            <strong>CANT.</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-1">
+                                        <span>
+                                            <strong>DESC.</strong>
+                                        </span>
+                                    </div>
+                                    <div class="col-2">
+                                        <span>
+                                            <strong>TOTAL</strong>
+                                        </span>
+                                    </div>
+                                </div>
+                                <t t-foreach="o.invoice_line_ids" t-as="line">
+                                    <div class="row" style="margin-bottom: 10px; border-bottom: 1px solid darkgray;">
+                                        <div class="col-2" style="text-align: left;">
+                                            <span t-esc="line.product_id.code"/>
+                                        </div>
+                                        <div class="col-4" style="padding-left: 0px; text-align: center;">
+                                            <span t-esc="line.product_id.name"/>
+                                        </div>
+                                        <div class="col-2" style="padding-left: 0px; text-align: center;">
+                                            <span t-esc="'%.2f' % line.price_unit"/>
+                                        </div>
+                                        <div class="col-1" style="padding-left: 0px; text-align: center;">
+                                            <span t-esc="'%.2f' % line.quantity"/>
+                                        </div>
+                                        <div class="col-1" style="padding-left: 0px; text-align: center;">
+                                            <span t-esc="'%.2f' % line.discount"/>
+                                        </div>
+                                        <div class="col-2" style="padding-left: 0px; text-align: right;">
+                                            <span t-field="line.price_subtotal"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </div>
+                                    </div>
+                                </t>
+
+                                <div class="row">
+                                    <div class="col-7" style="background-color: silver;">
+                                        <span>
+                                            <strong>Información Adicional</strong>
+                                        </span>
+                                        <br/>
+                                        <br/>
+                                        <span>
+                                            <strong>Dirección:</strong>
+                                        </span>
+                                        <span t-esc="o.partner_id.street or '**'"/>
+                                        <br/>
+                                        <span>
+                                            <strong>Teléfono:</strong>
+                                        </span>
+                                        <span t-esc="o.partner_id.phone or '**'"/>
+                                        <br/>
+                                        <span>
+                                            <strong>Email:</strong>
+                                        </span>
+                                        <span t-esc="o.partner_id.email"/>
+                                        <br/>
+                                        <span>
+                                            <strong>Pre-Factura:</strong>
+                                        </span>
+                                        <!--                                        <span t-esc="o.origen"/>-->
+                                        <br/>
+                                        <span>
+                                            <strong>Orden de Servicio:</strong>
+                                        </span>
+                                        <!--                                        <span t-esc="o.service_order"/>-->
+                                        <br/>
+                                        <table>
+                                            <tr>
+                                                <td style="max-width: 325px">
+                                                    <span>
+                                                        <strong>Forma de pago:</strong>
+                                                    </span>
+                                                    <span t-esc="o.epayment_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span style="margin-left: 20px">
+                                                        <strong>Valor:</strong>
+                                                        <span t-field="o.amount_residual"
+                                                              t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <br/>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="row" style="text-align: right;">
+                                            <div class="col-7"
+                                                 style="border-bottom: 1px solid darkgray; padding-left: 0px;">
+                                                <span>
+                                                    <strong>Subtotal 12%</strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-5" style="border-bottom: 1px solid darkgray;">
+                                                <span t-field="o.amount_tax_signed"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align: right;">
+                                            <div class="col-7"
+                                                 style="border-bottom: 1px solid darkgray; padding-left: 0px;">
+                                                <span>
+                                                    <strong>Subtotal 0%</strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-5" style="border-bottom: 1px solid darkgray;">
+                                                <span t-field="o.amount_tax"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align: right;">
+                                            <div class="col-7"
+                                                 style="border-bottom: 1px solid darkgray; padding-left: 0px;">
+                                                <span>
+                                                    <strong>Subtotal No obj. de IVA</strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-5" style="border-bottom: 1px solid darkgray;">
+                                                <!--                                                <span t-field="o.amount_novat"-->
+                                                <!--                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align: right;">
+                                            <div class="col-7"
+                                                 style="border-bottom: 1px solid darkgray; padding-left: 0px;">
+                                                <span>
+                                                    <strong>Subtotal</strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-5" style="border-bottom: 1px solid darkgray;">
+                                                <span t-field="o.amount_untaxed"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align: right;">
+                                            <div class="col-7"
+                                                 style="border-bottom: 1px solid darkgray; padding-left: 0px;">
+                                                <span>
+                                                    <strong>Total Descuento</strong>
+                                                </span>
+                                            </div>
+                                            <div class="col-5" style="border-bottom: 1px solid darkgray;">
+                                                <!--                                                <span t-esc="o.amount_disco"-->
+                                                <!--                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+                                            </div>
+                                        </div>
+                                        <!--                                        <t t-foreach="o._get_tax_amount_by_group()" t-as="amount_by_group">-->
+                                        <!--                                            <div class="row" style="text-align: right;">-->
+                                        <!--                                                <div class="col-7"-->
+                                        <!--                                                     style="border-bottom: 1px solid darkgray; padding-left: 0px;">-->
+                                        <!--                                                    <strong>-->
+                                        <!--                                                        <span t-esc="amount_by_group[0]"/>-->
+                                        <!--                                                    </strong>-->
+                                        <!--                                                </div>-->
+                                        <!--                                                <div class="col-5" style="border-bottom: 1px solid darkgray;">-->
+                                        <!--                                                    <span t-esc="amount_by_group[1]"-->
+                                        <!--                                                          t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>-->
+                                        <!--                                                </div>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </t>-->
+                                        <div class="row" style="text-align: right;">
+                                            <div class="col-7"
+                                                 style="border-bottom: 1px solid darkgray; padding-left: 0px;">
+                                                <strong>
+                                                    <span>TOTAL</span>
+                                                </strong>
+                                            </div>
+                                            <div class="col-5" style="border-bottom: 1px solid darkgray;">
+                                                <span t-field="o.amount_total"
+                                                      t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo> 

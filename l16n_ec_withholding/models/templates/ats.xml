@@ -1,0 +1,134 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<iva>
+    <TipoIDInformante>{{ tipo_documento }}</TipoIDInformante>
+    <IdInformante>{{ id_informante }}</IdInformante>
+    <razonSocial>{{razon_social}}</razonSocial>
+    <Anio>{{ anio }}</Anio>
+    <Mes>{{ mes }}</Mes>
+    {%if manual %}
+    <numEstabRuc>001</numEstabRuc>
+    {% endif %}
+    <totalVentas>{{totalVentas}}</totalVentas>
+    <codigoOperativo>{{codigoOperativo}}</codigoOperativo>
+    <compras>
+        {% for item in list_compras %}
+        <detalleCompras>
+            <codSustento>{{item['codSustento']}}</codSustento>
+            <tpIdProv>{{item['tpIdProv']}}</tpIdProv>
+            <idProv>{{item['idProv']}}</idProv>
+            <tipoComprobante>{{item['tipoComprobante']}}</tipoComprobante>
+            {% if item['tipoProv'] %}
+            <tipoProv>{{item['tipoProv']}}</tipoProv>
+            <denoProv>{{item['denoProv']}}</denoProv>
+            {% endif %}
+            <parteRel>{{item['parteRel']}}</parteRel>
+            <fechaRegistro>{{item['fechaRegistro']}}</fechaRegistro>
+            <establecimiento>{{item['establecimiento']}}</establecimiento>
+            <puntoEmision>{{item['puntoEmision']}}</puntoEmision>
+            <secuencial>{{item['secuencial']}}</secuencial>
+            <fechaEmision>{{item['fechaEmision']}}</fechaEmision>
+            <autorizacion>{{item['autorizacion']}}</autorizacion>
+            <baseNoGraIva>{{item['baseNoGraIva']}}</baseNoGraIva>
+            <baseImponible>{{item['baseImponible']}}</baseImponible>
+            <baseImpGrav>{{item['baseImpGrav']}}</baseImpGrav>
+            <baseImpExe>{{item['baseImpExe']}}</baseImpExe>
+            <montoIce>{{item['montoIce']}}</montoIce>
+            <montoIva>{{item['montoIva']}}</montoIva>
+            <valRetBien10>{{item['valRetBien10']}}</valRetBien10>
+            <valRetServ20>{{item['valRetServ20']}}</valRetServ20>
+            <valorRetBienes>{{item['valorRetBienes']}}</valorRetBienes>
+            <valRetServ50>{{item['valRetServ50']}}</valRetServ50>
+            <valorRetServicios>{{item['valorRetServicios']}}</valorRetServicios>
+            <valRetServ100>{{item['valRetServ100']}}</valRetServ100>
+            <totbasesImpReemb>{{item['totbasesImpReemb']}}</totbasesImpReemb>
+            <pagoExterior>
+                <pagoLocExt>01</pagoLocExt>
+                <paisEfecPago>NA</paisEfecPago>
+                <aplicConvDobTrib>NA</aplicConvDobTrib>
+                <pagExtSujRetNorLeg>NA</pagExtSujRetNorLeg>
+            </pagoExterior>
+            {% if item['formaPago'] %}
+            <formasDePago>
+                <formaPago>{{item['formaPago']}}</formaPago>
+            </formasDePago>
+            {% endif %}
+            <air>
+                {% for ret in item['detalleAir'] %}
+                <detalleAir>
+                    <codRetAir>{{ret['codRetAir']}}</codRetAir>
+                    <baseImpAir>{{ret['baseImpAir']}}</baseImpAir>
+                    <porcentajeAir>{{ret['porcentajeAir']}}</porcentajeAir>
+                    <valRetAir>{{ret['valRetAir']}}</valRetAir>
+                </detalleAir>
+                {% endfor %}
+            </air>
+            {% if item['totalAmount']%}
+            <estabRetencion1>{{item['estabRetencion1']}}</estabRetencion1>
+            <ptoEmiRetencion1>{{item['ptoEmiRetencion1']}}</ptoEmiRetencion1>
+            <secRetencion1>{{item['secRetencion1']}}</secRetencion1>
+            <autRetencion1>{{item['autRetencion1']}}</autRetencion1>
+            <fechaEmiRet1>{{item['fechaEmiRet1']}}</fechaEmiRet1>
+            {% endif %}
+
+            {% if item['tipoComprobante']=='04'%}
+                <docModificado>01</docModificado>
+                <estabModificado>{{item['estabModificado']}}</estabModificado>
+                <ptoEmiModificado>{{item['ptoEmiModificado']}}</ptoEmiModificado>
+                <secModificado>{{item['secModificado']}}</secModificado>
+                <autModificado>{{item['autModificado']}}</autModificado>
+            {% endif %}
+        </detalleCompras>
+        {% endfor %}
+    </compras>
+
+    <ventas>
+        {% for item in list_ventas %}
+        <detalleVentas>
+            <tpIdCliente>{{item['tpIdCliente']}}</tpIdCliente>
+            <idCliente>{{item['idCliente']}}</idCliente>
+            <parteRelVtas>{{item['parteRelVtas']}}</parteRelVtas>
+            {% if item['tipoCliente'] %}
+            <tipoCliente>{{item['tipoCliente']}}</tipoCliente>
+            <denoCli>{{item['nombrCliente']}}</denoCli>
+            {% endif %}
+            <tipoComprobante>{{item['tipoComprobante']}}</tipoComprobante>
+            <tipoEmision>{{item['tipoEmision']}}</tipoEmision>
+            <numeroComprobantes>{{item['numeroComprobantes']}}</numeroComprobantes>
+            <baseNoGraIva>{{item['baseNoGraIva']}}</baseNoGraIva>
+            <baseImponible>{{item['baseImponible']}}</baseImponible>
+            <baseImpGrav>{{item['baseImpGrav']}}</baseImpGrav>
+            <montoIva>{{item['montoIva']}}</montoIva>
+            <montoIce>{{item['montoIce']}}</montoIce>
+            <valorRetIva>{{item['valorRetIva']}}</valorRetIva>
+            <valorRetRenta>{{item['valorRetRenta']}}</valorRetRenta>
+             {% if item['formaPago']%}
+            <formasDePago>
+                <formaPago>{{item['formaPago']}}</formaPago>
+            </formasDePago>
+            {% endif %}
+        </detalleVentas>
+        {% endfor %}
+    </ventas>
+
+    <ventasEstablecimiento>
+        <ventaEst>
+            <codEstab>001</codEstab>
+            <ventasEstab>{{totalVentas}}</ventasEstab>
+            <ivaComp>0.00</ivaComp>
+        </ventaEst>
+    </ventasEstablecimiento>
+
+    <anulados>
+        {% for ret in detalleAnulados %}
+        <detalleAnulados>
+            <tipoComprobante>{{ret['tipoComprobante']}}</tipoComprobante>
+            <establecimiento>{{ret['establecimiento']}}</establecimiento>
+            <puntoEmision>{{ret['puntoEmision']}}</puntoEmision>
+            <secuencialInicio>{{ret['secuencialInicio']}}</secuencialInicio>
+            <secuencialFin>{{ret['secuencialFin']}}</secuencialFin>
+            <autorizacion>{{ret['autorizacion']}}</autorizacion>
+        </detalleAnulados>
+        {% endfor %}
+    </anulados>
+</iva>

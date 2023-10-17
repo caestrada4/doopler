@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<liquidacionCompra id="comprobante" version="1.0.0">
+    <infoTributaria>
+        <ambiente>{{ ambiente }}</ambiente>
+        <tipoEmision>{{ tipoEmision }}</tipoEmision>
+        <razonSocial>{{ razonSocial }}</razonSocial>
+        <nombreComercial>{{ nombreComercial }}</nombreComercial>
+        <ruc>{{ ruc }}</ruc>
+        <claveAcceso/>
+        <codDoc>{{ codDoc }}</codDoc>
+        <estab>{{ estab }}</estab>
+        <ptoEmi>{{ ptoEmi }}</ptoEmi>
+        <secuencial>{{ secuencial }}</secuencial>
+        <dirMatriz>{{ dirMatriz }}</dirMatriz>
+    </infoTributaria>
+    <infoLiquidacionCompra>
+        <fechaEmision>{{ fechaEmision }}</fechaEmision>
+        <dirEstablecimiento>{{ dirMatriz }}</dirEstablecimiento>
+        {% if contribuyenteEspecial %}
+            <contribuyenteEspecial>{{ contribuyenteEspecial }}</contribuyenteEspecial>
+        {% endif %}
+        <obligadoContabilidad>{{ obligadoContabilidad }}</obligadoContabilidad>
+        <tipoIdentificacionProveedor>{{ tipoIdentificacionComprador }}</tipoIdentificacionProveedor>
+        <razonSocialProveedor>{{ razonSocialComprador }}</razonSocialProveedor>
+        <identificacionProveedor>{{ identificacionComprador }}</identificacionProveedor>
+        <direccionProveedor>{{ direccionProveedor }}</direccionProveedor>
+        <totalSinImpuestos>{{ totalSinImpuestos }}</totalSinImpuestos>
+        <totalDescuento>{{ totalDescuento }}</totalDescuento>
+
+
+
+        {% if liq_purchase %}
+            <codDocReembolso>{{liq_purchase['codDocReembolso']}}</codDocReembolso>
+            <totalComprobantesReembolso>{{liq_purchase['totalComprobantesReembolso']}}</totalComprobantesReembolso>
+            <totalBaseImponibleReembolso>{{liq_purchase['totalBaseImponibleReembolso']}}</totalBaseImponibleReembolso>
+            <totalImpuestoReembolso>{{liq_purchase['totalImpuestoReembolso']}}</totalImpuestoReembolso>
+        {% endif %}
+
+        <totalConImpuestos>
+            {% for item in totalConImpuestos %}
+            <totalImpuesto>
+                <codigo>{{ item['codigo'] }}</codigo>
+                <codigoPorcentaje>{{ item['codigoPorcentaje'] }}</codigoPorcentaje>
+                <descuentoAdicional>0.00</descuentoAdicional>
+                <baseImponible>{{ item['baseImponible'] }}</baseImponible>
+                <tarifa>{{ item['tarifa'] }}</tarifa>
+                <valor>{{ item['valor'] }}</valor>
+            </totalImpuesto>
+            {% endfor %}
+        </totalConImpuestos>
+        <propina>0.00</propina>
+        <importeTotal>{{ importeTotal }}</importeTotal>
+        <moneda>DOLAR</moneda>
+        <pagos>
+            <pago>
+                <formaPago>{{ formaPago }}</formaPago>
+                <total>{{ importeTotal }}</total>
+                <unidadTiempo>contado</unidadTiempo>
+            </pago>
+        </pagos>
+    </infoLiquidacionCompra>
+
+    <detalles>
+        {% for item in detalles %}
+        <detalle>
+            <codigoPrincipal>{{ item['codigoPrincipal'] }}</codigoPrincipal>
+            <!-- <codigoAuxiliar>FALTA</codigoAuxiliar>-->
+            <descripcion>{{ item['descripcion'] }}</descripcion>
+            <unidadMedida>FALTA</unidadMedida>
+            <cantidad>{{ item['cantidad'] }}</cantidad>
+            <precioUnitario>{{ item['precioUnitario'] }}</precioUnitario>
+            <descuento>{{ item['descuento'] }}</descuento>
+            <precioTotalSinImpuesto>{{ item['precioTotalSinImpuesto'] }}</precioTotalSinImpuesto>
+
+            <detallesAdicionales>
+                <detAdicional nombre="nombre0" valor="valor0"></detAdicional>
+			    <detAdicional nombre="nombre1" valor="valor1"></detAdicional>
+            </detallesAdicionales>
+
+            <impuestos>
+                {% for tax in item['impuestos'] %}
+                <impuesto>
+                    <codigo>{{ tax['codigo'] }}</codigo>
+                    <codigoPorcentaje>{{ tax['codigoPorcentaje'] }}</codigoPorcentaje>
+                    <tarifa>{{ tax['tarifa'] }}</tarifa>
+                    <baseImponible>{{ tax['baseImponible'] }}</baseImponible>
+                    <valor>{{ tax['valor'] }}</valor>
+                </impuesto>
+                {% endfor %}
+            </impuestos>
+        </detalle>
+        {% endfor %}
+    </detalles>
+
+    {% if liq_purchase %}
+        <reembolsos>
+              <reembolsoDetalle>
+                 <tipoIdentificacionProveedorReembolso>{{liq_purchase['detail']['tipoIdentificacionProveedorReembolso']}}</tipoIdentificacionProveedorReembolso>
+                 <identificacionProveedorReembolso>{{liq_purchase['detail']['identificacionProveedorReembolso']}}</identificacionProveedorReembolso>
+                 <codPaisPagoProveedorReembolso>{{liq_purchase['detail']['codPaisPagoProveedorReembolso']}}</codPaisPagoProveedorReembolso>
+                 <tipoProveedorReembolso>{{liq_purchase['detail']['tipoProveedorReembolso']}}</tipoProveedorReembolso>
+                 <codDocReembolso>{{liq_purchase['codDocReembolso']}}</codDocReembolso>
+                 <estabDocReembolso>{{liq_purchase['detail']['estabDocReembolso']}}</estabDocReembolso>
+                 <ptoEmiDocReembolso>{{liq_purchase['detail']['ptoEmiDocReembolso']}}</ptoEmiDocReembolso>
+                 <secuencialDocReembolso>{{liq_purchase['detail']['secuencialDocReembolso']}}</secuencialDocReembolso>
+                 <fechaEmisionDocReembolso>{{liq_purchase['detail']['fechaEmisionDocReembolso']}}</fechaEmisionDocReembolso>
+                 <numeroautorizacionDocReemb>{{liq_purchase['detail']['numeroautorizacionDocReemb']}}</numeroautorizacionDocReemb>
+                 <detalleImpuestos>
+                     {% for item in liq_purchase['detail']['impuestos'] %}
+                        <detalleImpuesto>
+                           <codigo>{{item['codigo'] }}</codigo>
+                           <codigoPorcentaje>{{item['codigoPorcentaje'] }}</codigoPorcentaje>
+                           <tarifa>{{item['tarifa'] }}</tarifa>
+                           <baseImponibleReembolso>{{item['baseImponible'] }}</baseImponibleReembolso>
+                           <impuestoReembolso>{{item['valor'] }}</impuestoReembolso>
+                        </detalleImpuesto>
+                     {% endfor %}
+                 </detalleImpuestos>
+              </reembolsoDetalle>
+        </reembolsos>
+    {% endif %}
+
+  <!--  <maquinaFiscal>
+      <marca>AA</marca>
+      <modelo>BB</modelo>
+      <serie>123</serie>
+	</maquinaFiscal>-->
+
+    <infoAdicional>
+		<campoAdicional nombre="DIRECCION">{{direccionCliente}}</campoAdicional>
+		<campoAdicional nombre="VALOR">{{ importeTotal }}</campoAdicional>
+		<campoAdicional nombre="CORREOELECTRONICO">{{emailCliente}}</campoAdicional>
+	</infoAdicional>
+</liquidacionCompra>
+
+
