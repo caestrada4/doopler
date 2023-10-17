@@ -1,0 +1,178 @@
+<odoo>
+    <data>
+        <record id="view_account_bank_reconcile_form" model="ir.ui.view">
+            <field name="name">view.account.bank.reconcile</field>
+            <field name="model">account.bank.reconcile</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <!-- <button name="action_print" string="Imprimir" states="done"
+                        type="object"
+                            icon="fa-print" /> -->
+                        <button name="action_done" string="Confirmar" states="draft"
+                            confirm="Seguro de confirmar ?"
+                            type="object" />
+                        <button name="unlink" string="Eliminar" states="draft"
+                            confirm="Seguro que desea eliminar el
+                          extracto bancario,y los movimientos del extracto ?"
+                            type="object" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="journal_id" domain="[('type','=','bank')]"
+                                    widget="selection" />
+                                <field name="date_start" />
+                                <field name="date_stop" />
+                                <field name="file_name" invisible="1" />
+                                <field name="excel_file" filename="file_name" />
+                            </group>
+                            <group>
+                                <field name="balance_start" />
+                                <field name="balance_stop" />
+                                <field name="balance_carga_inicial" />
+                                <field name="balance_banco" />
+                                <button name="export" states="draft" style=" width: 200px;"
+                                    string="Importar"
+                                    class="btn btn-primary" type="object" />
+                            </group>
+                        </group>
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="text-danger">El documento debe tener el siguiente formato</p>
+                                <table class="table text-center">
+                                    <tr>
+                                        <td>
+                                            Fecha
+                                        </td>
+                                        <td>
+                                            Codigo
+                                        </td>
+                                        <td>
+                                            Concepto
+                                        </td>
+                                        <td>
+                                            Tipo
+                                        </td><td>
+                                            Documento
+                                        </td>
+                                        <td>
+                                            Oficina
+                                        </td>
+                                        <td>
+                                            Monto
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>11/30/2022</td>
+                                        <td>9982</td>
+                                        <td>RETENCION EN LA FUENTE</td>
+                                        <td>D</td>
+                                        <td>875939428</td>
+                                        <td>AGENCIA PARA PROCESOS BATCH</td>
+                                        <td>0.09</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="col-12" style="margin-top:20px">
+                                <kanban>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="row oe_kanban_vignette">
+                                                <field name="extracto_ids" nolabel="1">
+                                                    <tree delete="false" create="false" edit="false"
+                                                          editable="top"
+                                                          default_order="date">
+                                                        <field name="referencia"/>
+                                                        <field name="date"/>
+                                                        <field name="concepto"/>
+                                                        <field name="type"/>
+                                                        <field name="debe"/>
+                                                        <field name="haber"/>
+                                                        <field name="conciliado"/>
+                                                        <button name="action_done"
+                                                                class="oe_stat_button"
+                                                                string="Conciliar"
+                                                                type="object"/>
+                                                    </tree>
+                                                </field>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <!--
+            Form Extracto bancario
+        -->
+
+        <record id="view_account_bank_extracto" model="ir.ui.view">
+            <field name="name">view.extracto.bancari</field>
+            <field name="model">extracto.bancario</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <group>
+                                <field name="codigo" />
+                                <field name="concepto" />
+                                <field name="referencia" />
+                                <field name="oficina" />
+                                <field name="account_id" />
+                            </group>
+                        </div>
+                        <div class="col-xs-6">
+                            <group>
+                                <field name="debe" />
+                                <field name="haber" />
+                                <field name="conciliado" />
+                                <field name="date" />
+                                <field name="move_id" />
+                            </group>
+                        </div>
+                    </div>
+
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_account_bank_reconcile_tree" model="ir.ui.view">
+            <field name="name">view.account.bank.reconcile</field>
+            <field name="model">account.bank.reconcile</field>
+            <field name="arch" type="xml">
+                <tree decoration-info="state=='draft' ">
+                    <field name="name" />
+                    <field name="journal_id" />
+                    <field name="date_start" />
+                    <field name="date_stop" />
+                    <field name="balance_start" />
+                    <field name="balance_stop" />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_account_bank_reconcile" model="ir.actions.act_window">
+            <field name="name">Conciliación Bancaria</field>
+            <field name="res_model">account.bank.reconcile</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_conciliacion_bancarias" name="Conciliacion Bancaria"
+            parent="account.menu_finance_entries" sequence="3" />
+
+        <menuitem action="action_account_bank_reconcile" id="menu_account_bank_reconcile"
+            parent="menu_conciliacion_bancarias" sequence="1" />
+
+    </data>
+</odoo>

@@ -1,0 +1,61 @@
+<odoo>
+    <data>
+
+        <record id="view_cargas_iniciales_form" model="ir.ui.view">
+            <field name="name">view.account.bank.reconcile</field>
+            <field name="model">bnc.initial.balances</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="date" required="1"/>
+                            <field name="number" required="1" placeholder="0102030405"/>
+                            <field name="partner_id"
+                                   domain="[('supplier','=',True)]"/>
+                            <field name="account_id" required="1" create="false" edit="false"/>
+
+                        </group>
+
+                        <group>
+
+                            <field name="concepto" required="1"></field>
+                            <field name="value" required="1" placeholder="150.25"/>
+
+                            <field name="conciliate" />
+
+                            <field name="conciliate_date" attrs="{'required': [('conciliate', '=', True)]}"/>
+
+                        </group>
+                    </group>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="view_cargas_iniciales_tree" model="ir.ui.view">
+            <field name="name">view.account.bank.reconcile</field>
+            <field name="model">bnc.initial.balances</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="number"/>
+                    <field name="date"/>
+                    <field name="partner_id"/>
+                    <field name="value"/>
+                    <field name="conciliate"/>
+                    <field name="conciliate_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_cargas_iniciales" model="ir.actions.act_window">
+            <field name="name">Movimientos Bancarios</field>
+            <field name="res_model">bnc.initial.balances</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_cargas_iniciales" name="Cargas Iniciales" parent="menu_conciliacion_bancarias"
+                  action="action_cargas_iniciales" sequence="4"/>
+
+    </data>
+</odoo>

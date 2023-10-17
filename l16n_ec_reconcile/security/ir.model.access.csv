@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+id_extracto_bancario,extracto_bancario,model_extracto_bancario,account.group_account_invoice,1,1,1,1
+id_account_bank_reconcile,account_bank_reconcile,model_account_bank_reconcile,account.group_account_invoice,1,1,1,1
+id_bank_account_move,bank_account_move,model_bank_account_move,account.group_account_invoice,1,1,1,1
+id_conciliacion_manual,conciliacion_manual,model_conciliacion_manual,account.group_account_invoice,1,1,1,1

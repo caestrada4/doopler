@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <div t-name="SelectPartner">
+        <label>Seleccione</label>
+        <select id="id_partner" class="form-control">
+            <t t-foreach="items" t-as="variable">
+                <option t-att-value="variable.id">
+                    <t t-esc="variable.name" />
+                </option>
+            </t>
+        </select>
+    </div>
+    <div t-name="SelectAccount">
+        <label>Seleccione</label>
+        <select id="id_cuentas" class="form-control">
+            <t t-foreach="items" t-as="variable">
+                <option t-att-value="variable.id">
+                    <t t-esc="variable.name" />
+                </option>
+            </t>
+        </select>
+    </div>
+    <div t-name="l16n_ec_reconcile.mov_bancarios" class="o_reconciliation">
+        <div class="o_form_view">
+            <div class="o_form_sheet_bg">
+                <div class="o_form_sheet">
+                    <div class="row">
+                        <div cass="col-10">
+                            <div class="panel panel-default">
+                                <input id="id_inicio" type="hidden" value="0"></input>
+                                <div class="panel-heading">
+                                    <div class="container">
+                                        <h2>Movimientos Bancarios</h2>
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label>Fecha Desde</label>
+                                                <input id="id_fecha_desde" type="date" class="form-control datepicker"></input>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Fecha Hasta</label>
+                                                <input id="id_fecha_hasta" type="date" class="form-control"></input>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Número de Documento/Cheque </label>
+                                                <input id="id_nodocumento" class="form-control"></input>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <label>Seleccione</label>
+                                                <select id="id_select" class="form-control">
+                                                    <option value="mayor" defaul="true">Mayor que</option>
+                                                    <option value="menor">Menor que</option>
+                                                    <option value="Igual">Igual a</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-3">
+                                                <label>Valor</label>
+                                                <input id="id_valor" class="form-control"></input>
+                                            </div>
+                                            <div class="col-3 ">
+                                                <div id="id_div_clientes" />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div id="id_select_account" />
+                                            </div>
+
+                                            <div class="col-3">
+                                                <label>Estado</label>
+                                                <select id="id_estado" class="form-control">
+                                                    <option value="todos" defaul="true">Todas</option>
+                                                    <option value="conciliado">Conciliados</option>
+                                                    <option value="noconciliado">No Conciliados</option>
+                                                </select>
+                                            </div>
+
+
+                                            <div class="col-4">
+                                                <button style="margin-top:23px"
+                                                    type="button"
+                                                    class="btn btn-primary id_btn_buscar">Buscar</button>
+                                                <!-- <button style="margin-top:23px;
+                                                margin-left:20px"
+                                                id="id_btn_movimientos_bancos_export"
+                                                type="button"
+                                                class="btn btn-primary ">Exportar</button> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="id_table_result" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div t-name="TableResultLine">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Número de Documento	</th>
+                    <th>Número Cheque</th>
+                    <th>Cuenta</th>
+                    <th>Beneficiario</th>
+                    <th>Concepto</th>
+                    <th>Valor</th>
+                    <th>Conciliado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="items" t-as="item">
+                    <tr>
+                       <td>
+                            <t t-esc="item.date"/>
+                       </td>
+                        <td>
+                        <t t-esc="item.name"/>
+                        </td>
+                        <td>
+                            <t t-esc="item.name_account"/>
+                        </td>
+                        <td><t t-esc="item.benef"/></td>
+                        <td><t t-esc="item.benef"/></td>
+                        <td><t t-esc="item.concepto"/></td>
+                        <td><t t-esc="item.valor"/></td>
+                        <td>
+                            <div t-att-id="'td_'+ item.id"> <t t-esc="item.conciliado"/> </div>
+                        </td>
+                        <td>
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_name" type="object" t-att-id="item.id"
+                                class="oe_stat_button btn-procesar-conciliacion" icon="fa-">
+                                Conciliar
+                                </button>
+                            </div>
+                        </td> 
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+        <div class="row">
+                <div class="col-9"></div>
+                <div class="col-3 form-inline">
+                    <div class="btn-group">
+                      <button type="button" t-if="init>0" id="id_btn_anterior" class="btn btn-primary btn_anterior">Anterior</button>
+                      <button type="button" t-if="items.length >0" id="id_btn_siquiente" style="margin-left:10px"
+                              class="btn btn-primary btn_siquiente">Siquiente</button>
+                   </div>
+            </div>
+        </div>  
+    </div>
+</templates>

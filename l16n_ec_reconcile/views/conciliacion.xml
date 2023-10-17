@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <!--        <template id="assets_backend_reconcilie" name="reconcilie_assets"
+        inherit_id="web.assets_backend">-->
+        <!--            <xpath expr="." position="inside">-->
+        <!--                <script type="text/javascript"
+        src="/l16n_ec_reconcile/static/src/js/conciliacion.js"/>-->
+        <!--            </xpath>-->
+        <!--        </template>-->
+
+        <record id="action_conciliacion_bancaria" model="ir.actions.client">
+            <field name="name">Conciliaciones Bancarioas</field>
+            <field name="tag">conciliacion_bancaria</field>
+        </record>
+
+        <menuitem id="home_page_conciliacion_bancaria" name="Conciliar"
+            parent="menu_conciliacion_bancarias"
+            action="action_conciliacion_bancaria" />
+
+        <record id="action_movimientos_bancarios" model="ir.actions.client">
+            <field name="name">Movimientos Bancarios</field>
+            <field name="tag">movimientos_bancarios</field>
+        </record>
+
+        <menuitem id="menu_movimientos_bancarios1" name="Movimientos Bancarios"
+            parent="menu_conciliacion_bancarias"
+            action="action_movimientos_bancarios" />
+
+    </data>
+</odoo>

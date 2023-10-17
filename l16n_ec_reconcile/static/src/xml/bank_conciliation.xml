@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+     <div t-name="l16n_ec_reconcile.BankList">
+          <label form="id_banco">Banco</label>
+         <input id="id_limite" value="10" type="hidden"/>
+         <select id="id_banco" class="form-control">
+                  <t t-foreach="items" t-as="bank">
+                      <option t-att-value="bank.id">
+                          <t t-esc="bank.name"/>
+                      </option>
+                  </t>
+              </select>
+     </div>
+    <div t-name="l16n_ec_reconcile.BankConciliation">
+        <div class="o_form_view">
+            <div class="o_form_sheet_bg">
+                <div class="o_form_sheet">
+                    <div class="row">
+                        <div cass="col-10">
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-6">
+                                            <div id="id_select_bank"/>
+                                    </div>
+                                    <div class="col-2">
+                                            <button class="btn btn-primary btn-conciliar" style="margin-top:25px">Conciliar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="oe_form_sheet oe_form_sheet_width o_form_sheet">
+                    <div class="card">
+                        <div class="card-heading">
+                            <div class="row" style="margin-top:10px">
+                                <div class="col-6">
+                                    <div class="container">
+                                    <h3 class="card-title">Conciliación </h3>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="container">
+                                        <button class="btn btn-primary js_automatic_reconciliation" style="float:right"
+                                                title="Consiliacion Automatica">Conciliar todo</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div id="reconciliation_lines_container"/>
+                            </div>
+                            <div class="container">
+                                <div class="show_more_container"><button class="show_more btn btn-primary btn-sm">Mostrar mas... (<span
+                                        class="num_items_remaining"></span> restante)</button></div>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="oe_clear clearer"></div>
+                    <div class="notification_area"></div>
+                    <div class="interface_options oe_form o_form"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <t t-name="ListCuentas">
+        <t t-foreach="items.account" t-as="account">
+            <div class="card" t-att-data-lineid="account.id">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-4">
+                            Movimiento Contable : -
+                            <t t-esc="account.cuenta"/>
+                            -
+                            <t t-esc="account.ref"/>
+
+                        </div>
+                        <div class="col-2">
+                            <t t-esc="account.fecha"/>
+                        </div>
+                        <div class="col-2">
+                            <t t-esc="account.name"/>
+                        </div>
+                        <div class="col-2">
+                            <t t-f="account.credit > 0.00">
+                            <t t-esc="account.credit"/>
+                            </t>
+                        </div>
+                        <div class="col-2">
+
+                            <t t-f="'%.2f'%(account.debit) > 0.00">
+                                <t t-esc="account.debit"/>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-12">
+                            <t t-if="account.select.length > 0">
+                            <button class="btn btn-primary btn-send-conciliation"
+                                    t-att-data-lineid="account.id"
+                                    style="float:right">Conciliar</button>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <t t-foreach="account.select" t-as="con">
+                                <t t-call="reconciliation_move_line_select"></t>
+                            </t>
+                        </div>
+                        <div class="col-12">
+                            <div class="col-3" style="float:right">
+                                Total: <t t-esc="account.total"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px">
+                        <t t-foreach="account.conciliar" t-as="con">
+                            <t t-call="reconciliation_move_line"></t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <t t-name="reconciliation_move_line_select">
+        <div class="row line-conciliacion-unselect" t-att-data-lineid="con.id" t-att-data-selected="selected"
+             style="cursor:pointer;margin-left:30px">
+             <div class="col-4">
+                 Movimientos Extractos Banco: <t t-esc="con.ref"/>
+             </div>
+            <div class="col-2">
+                 <t t-esc="con.fecha"/>
+            </div>
+            <div class="col-2">
+                 <t t-esc="con.name"/>
+            </div>
+            <div class="col-2">
+                <t t-if="con.credit!=0">
+                    <t t-esc="con.credit"/>
+                </t>
+            </div>
+            <div class="col-2">
+                <t t-if="con.debit!=0">
+                    <t t-esc="con.debit"/>
+                </t>
+            </div>
+        </div>
+    </t>
+    <t t-name="reconciliation_move_line">
+        <div class="row line-conciliacion" t-att-data-lineid="con.id" t-att-data-selected="selected"
+             style="cursor:pointer;margin-left:30px">
+             <div class="col-4">
+                 <t t-esc="con.ref"/>
+             </div>
+            <div class="col-2">
+                 <t t-esc="con.fecha"/>
+            </div>
+            <div class="col-2">
+                 <t t-esc="con.name"/>
+            </div>
+            <div class="col-2">
+                <t t-if="con.credit!=0">
+                    <t t-esc="con.credit"/>
+                </t>
+            </div>
+            <div class="col-2">
+                <t t-if="con.debit!=0">
+                 <t t-esc="con.debit"/>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>
+     

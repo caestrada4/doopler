@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="extracto_reporte">
+        <t t-call="web.html_container">
+            <div class="page">
+                <t t-foreach="docs" t-as="o">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="logo" style="width: 330px; height: 180px;">
+                                        <img t-if="res_company.logo"
+                                            t-att-src="'data:image/png;base64,%s' % res_company.logo" />
+                                    </div>
+                                    <br />
+                                    <h4>
+                                        <span t-esc="res_company.name" />
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-12"> Bancos : <span t-esc="o.date_stop" />
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:20px">
+                        <div class="col-10">
+                            <table class="table">
+                                <header>
+                                    <tr>
+                                        <td>Codigo</td>
+                                        <td colspan="2">Cuenta</td>
+                                        <td></td>
+                                    </tr>
+                                </header>
+                                <body>
+                                    <tr>
+                                        <td>
+                                            <span t-esc="o.journal_id.default_account_id.code" />
+                                        </td>
+                                        <td colspan="2">
+                                            <span t-esc="o.journal_id.default_account_id.name" />
+                                        </td>
+                                        <td>
+                                            <span t-esc="o.balance_stop"
+                                                t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                        </td>
+                                    </tr>
+                                </body>
+                                Conciliaciones </table>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-12">
+                            <table class="table" with="100">
+                                <tr>
+                                    <th scope="col">Movimientos no conciliados del mes</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-12">
+                            <table class="table" style="with:100%">
+                                <header>
+                                    <tr>
+                                        <th scope="col">Beneficiario</th>
+                                        <th scope="col">No Cheque</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Valor</th>
+                                    </tr>
+                                </header>
+                                <body>
+                                    <t t-foreach="list_mov_noconciliados" t-as="li">
+                                        <tr>
+                                            <td>
+                                                <span t-esc="li['name']" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="li['move_name']" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="li['date']" />
+                                            </td>
+                                            <td>
+                                                <span style="margin-left:30px" t-esc="li['balance']"
+                                                    t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </body>
+                            </table>
+                        </div>
+
+                        <div class="col-10">
+                            <table class="table">
+                                <tr>
+                                    <th scope="col">Movimientos no conciliados mes anteriores</th>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="col-12">
+                            <table class="table">
+                                <header>
+                                    <tr>
+                                        <th scope="col">Beneficiario</th>
+                                        <th scope="col">No Cheque</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Valor</th>
+                                    </tr>
+                                </header>
+                                <body>
+                                    <t t-foreach="list_mov_noconciliados_mes" t-as="li">
+                                        <tr>
+                                            <td>
+                                                <span t-esc="li['name']" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="li['move_name']" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="li['date']" />
+                                            </td>
+                                            <td>
+                                                <span t-esc="li['balance']"
+                                                    t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </body>
+                            </table>
+
+                            <table class="table" style="margin-top:10px">
+
+                                <tr>
+                                    <td colspan="3">Total: Movimientos no conciliados</td>
+                                    <td>
+                                        <span t-esc="total_mov"
+                                            t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                    </td>
+                                </tr>
+
+                            </table>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table" style="margin-top:30px">
+                                    <tr>
+                                        <td>
+                                            Resumen
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table" style="margin-top:30px">
+                                    <tr>
+                                        <td colspan="3">Movimientos no conciliados</td>
+                                        <td>
+                                            <span t-esc="total_mov"
+                                                t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"> Saldo conciliado : <span
+                                                t-esc="o.journal_id.default_account_id.name" />
+                                        </td>
+                                        <td>
+                                            <span t-esc="o.balance_stop"
+                                                t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="3">Saldo segun extracto bancario</td>
+                                        <td>
+                                            <span t-esc="o.balance_banco"
+                                                t-options="{'widget': 'monetary', 'display_currency': res_company.currency_id}" />
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row" style="margin-top:30px">
+                        <div class="col-6">
+                            <div class="col-12" style="text-align: center;">
+                                ---------------------------------------------
+                            </div>
+                            <div class="col-12" style="text-align: center;">
+                                Realizado por
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="col-12" style="text-align: center;">
+                                ---------------------------------------------
+                            </div>
+                            <div class="col-12" style="text-align: center;">
+                                Aprobado por
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

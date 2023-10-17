@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <record id="conciliacion_manual" model="ir.ui.view">
+            <field name="name">Conciliacion Manual</field>
+            <field name="model">conciliacion.manual</field>
+            <field name="arch" type="xml">
+                <form create="0" string="Conciliacion">
+                    <div class="form-group">
+                        <field name="move_id" invisible="1" />
+                        <lavel>
+                            <h4>Fecha de Conciliación:</h4>
+                        </lavel>
+                        <field name="date" required="1" id="contiliation_date" />
+                    </div>
+                    <footer>
+                        <button name="conciliar" string="Conciliar" type="object"
+                            class="btn-primary " /> or <button special="cancel" string="Cancel"
+                            type="object" class="btn-default" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="conciliacion_manual_wizard" model="ir.actions.act_window">
+            <field name="name">Conciliacion Manual</field>
+            <field name="view_id" ref="conciliacion_manual" />
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">conciliacion.manual</field>
+            <!-- <field name="view_type">form</field> -->
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+    </data>
+</odoo>
