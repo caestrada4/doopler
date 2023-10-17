@@ -1,0 +1,149 @@
+<odoo>
+    <data>
+        <!-- Herencias de Vistas -->
+        <record id="cproduct_template_inherit_form" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"></field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='product_tooltip']" position="after">
+                    <field name="class_inherit" required="1"/>
+                    <field name="subclass_inherit" required="1" domain="[('cl_product_id','=',class_inherit)]"/>
+                    <field name="fa_class_inherit" required="1"
+                           domain="[('scl_product_id','=',subclass_inherit)]"/>
+                    <field name="mod_class_inherit" required="1"
+                           domain="[('f_product_id','=',fa_class_inherit)]"/>
+                </xpath>
+
+                <!-- <xpath expr="//group/field[@name='default_code']" position="attributes">
+                            <attribute
+                name="readonly">1</attribute>
+                        </xpath>  -->
+            </field>
+        </record>
+        <record id="cproduct_template_inherit_form_2" model="ir.ui.view">
+            <field name="name">product.template.form.inherit.2</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"></field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='purchase_ok']" position="before">
+                    <span class="d-inline-block">
+                        <field name="details_ok"/>
+                        <label for="details_ok"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="cproduct_template_inherit_only_form" model="ir.ui.view">
+            <field name="name">product.template.only.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"></field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='default_code']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="doopler_product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="categ_id" position="before">
+                    <field name="class_inherit" optional="show" string="Clase de producto"/>
+                    <field name="subclass_inherit" optional="show" string="Subclase de producto"/>
+                    <field name="fa_class_inherit" optional="show" string="Familia de producto"/>
+                    <field name="mod_class_inherit" optional="show" string="Modelo de producto"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="cproduct_template_inherit_form_21" model="ir.ui.view">
+            <field name="name">product.template.form.inherit.21</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"></field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='invoicing']" position="after">
+                    <page name="attributes_telas" string="Atributos Telas"
+                          attrs="{'invisible':[('class_inherit','!=',1)]}">
+
+                        <group class="oe_inline">
+                            <group class="oe_inline">
+                                 <field name="colorTela" attrs="{'required':[('class_inherit','=',1)]}" widget='selection'/>
+                                <field name="visilloTela" widget='selection'></field>
+                                <field name="texturaTela" attrs="{'required':[('class_inherit','=',1)]}" widget='selection' ></field>
+                                <field name="composicionTela" attrs="{'required':[('class_inherit','=',1)]}" widget='selection'></field>
+                            </group>
+                            <group class="oe_inline oe_right">
+                                <field name="pesoTela" attrs="{'required':[('class_inherit','=',1)]}"></field>
+                                <field name="presentacionTela" attrs="{'required':[('class_inherit','=',1)]}" widget='selection'></field>
+                                <field name="anchorolloTela" attrs="{'required':[('class_inherit','=',1)]}"></field>
+                                <field name="anchofranjaTela"></field>
+                                <field name="aperturaTela" attrs="{'required':[('class_inherit','=',1)]}" widget="percentage"></field>
+
+                            </group>
+                                <group class="oe_inline oe_left">
+                                <field name="uom_id" string='Unidad de Medida Rollo'
+                                       attrs="{'required':[('class_inherit','=',1)]}"></field>
+                                <field name="uom_id" string='Unidad de Medida Franja'
+                                       attrs="{'required':[('class_inherit','=',1)]}"></field>
+                                </group>
+                        </group>
+                    </page>
+
+                    <page name="attributes_perfileria" string="Atributos Perfileria"
+                          attrs="{'invisible':[('class_inherit','!=',6)]}">
+
+
+                        <group class="oe_inline">
+                            <group class="oe_inline">
+                                <field name="colorPerfileria" attrs="{'required':[('class_inherit','=',6)]}" widget='selection'></field>
+                                <field name="pestaniaPerfileria"></field>
+                                <field name="ranuraPerfileria"></field>
+                                <field name="medidaRanuraPerfileria"></field>
+                            </group>
+                            <group class="oe_inline oe_right">
+                                <field name="longitudPerfileria" attrs="{'required':[('class_inherit','=',6)]}"></field>
+                                <field name="diametroPerfileria"></field>
+
+                            </group>
+                                <group class="oe_inline oe_left">
+                                 <field name="uom_id" string='Unidad de Medida Longitud'
+                                       attrs="{'required':[('class_inherit','=',6)]}"></field>
+                                <field name="uom_id" string='Unidad de Medida Diametro'></field>
+                                </group>
+                        </group>
+                    </page>
+                    <page name="attributes_accesorios" string="Atributos Accesorios" attrs="{'invisible':[('class_inherit','!=',5)]}">
+                        <group class="oe_inline">
+                            <group class="oe_inline">
+                                <field name="colorAccesorios" attrs="{'required':[('class_inherit','=',5)]}" widget='selection'/>
+                                <field name="mandoAccesorios" widget='selection'/>
+                            </group>
+                            <group class="oe_inline oe_right">
+                                <field name="logoAccesorios"/>
+                                <field name="diametroPerfileria"/>
+
+                            </group>
+                                <group class="oe_inline oe_left">
+                                    <field name="uom_id" string='Unidad de Medida Diametro' attrs="{'required':[('class_inherit','=',5)]}"/>
+                                </group>
+                        </group>
+                    </page>
+
+
+
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

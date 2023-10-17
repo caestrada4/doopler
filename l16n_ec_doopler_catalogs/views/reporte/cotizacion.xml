@@ -1,0 +1,9 @@
+<odoo>
+  <data>
+    <template id="reporte_cotizacion" inherit_id="sale.report_saleorder">
+        
+        
+    </template>
+
+  </data>
+</odoo>

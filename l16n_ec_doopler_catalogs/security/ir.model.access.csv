@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cproduct_doclass,cproduct_doclass,model_cproduct_doclass,base.group_user,1,1,1,1
+access_subproduct_dosubclass,subproduct_dosubclass,model_subproduct_dosubclass,base.group_user,1,1,1,1
+access_fproduct_dofamily,fproduct_dofamily,model_fproduct_dofamily,base.group_user,1,1,1,1
+access_mproduct_domodel,mproduct_domodel,model_mproduct_domodel,base.group_user,1,1,1,1
+access_sale_order_pop,sale_order_pop,model_sale_order_pop,base.group_user,1,1,1,1
+access_descuentos_model,descuentos_model,model_descuentos_model,base.group_user,1,1,1,1
+access_product_color_catalogo,product_color_catalogo,model_product_color_catalogo,base.group_user,1,1,1,1
+access_product_textura_catalogo,product_textura_catalogo,model_product_textura_catalogo,base.group_user,1,1,1,1
+access_product_presentacion_catalogo,product_presentacion_catalogo,model_product_presentacion_catalogo,base.group_user,1,1,1,1
+access_product_mando_catalogo,product_mando_catalogo,model_product_mando_catalogo,base.group_user,1,1,1,1
+access_product_visillo_catalogo,product_visillo_catalogo,model_product_visillo_catalogo,base.group_user,1,1,1,1
+access_product_composicion_catalogo,product_composicion_catalogo,model_product_composicion_catalogo,base.group_user,1,1,1,1

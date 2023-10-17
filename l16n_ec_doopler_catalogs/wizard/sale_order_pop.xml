@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="sale_oder_pop_form">
+      <field name="name">sale.order.pop.form</field>
+      <field name="model">sale.order.pop</field>
+      <field name="arch" type="xml">
+        <form string="Detallo de cortina">
+          <sheet>
+            <group>
+              <group>
+                <field name="name" required="1" />
+                <field name="tipo_cortina" required="1" />
+                <field name="ancho" required="1" />
+                <field name="alto" required="1" />
+                <field name="clnt" required="1" />
+              </group>
+              <group>
+                <field name="mando" required="1" />
+                <field name="material" required="1" />
+                <field name="enci" required="1" />
+                <field name="mot" required="1" />
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- retenciones de compras -->
+    <record id="sale_oder_pop_action" model="ir.actions.act_window">
+      <field name="name">sale.order.pop</field>
+      <field name="res_model">sale.order.pop</field>
+      <field name="view_mode">tree,form</field>
+      <field name="target">new</field>
+    </record>
+  </data>
+</odoo>
