@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+        <record id="view_reporte_transaccional1" model="ir.ui.view">
+            <field
+                name="name">ventas.trans.form</field>
+            <field name="model">l16n.reporte.trans</field>
+            <field name="arch" type="xml">
+                <form>
+                    <label
+                        for="month" string="Mes:"
+                        style="font-weight: bold!important;margin-right:10px;margin-left: 0px;" />
+                    <field name="month"
+                        style="width:110px" />
+                    <label for="month" string="Año"
+                        style="font-weight: bold !important;margin-right:10px;margin-left: 20px;" />
+                    <field
+                        name="year" style="width:110px;margin-left: 34px;" />
+
+                    <button
+                        name="generate_file" type="object" string="Genera Anexo"
+                        style="width:110px;margin-left:
+        34px;" />
+
+                    <field name="txt_filename" invisible="True" />
+                    <field
+                        name="txt_binary"
+                        style="font-weight: bold !important;margin-right:20px;margin-left: 0px;"
+                        filename="txt_filename" readonly="1" />
+                </form>
+            </field>
+        </record>
+        <record id="centro_costo_form_list" model="ir.ui.view">
+            <field
+                name="model">l16n.reporte.trans</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="year" />
+                    <field name="month" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_reporte_transaccional_list" model="ir.actions.act_window">
+            <field name="name">Reporte Transaccional</field>
+            <field name="res_model">l16n.reporte.trans</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="reporte_transaccional1"
+            name="Anexo Transaccional ATS" parent="account.menu_finance_entries"
+            action="view_reporte_transaccional_list"
+            sequence="2" />
+
+
+    </data>
+</odoo>
